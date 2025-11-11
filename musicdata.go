@@ -34,6 +34,10 @@ type Track struct {
 	Composers map[string]int
 	Conductors map[string]int
 	Performers map[string]int
+//Engineers
+// producer/engineer/artist/choir/solo/orchestra
+
+
 	Genres map[string]int
 }
 
@@ -124,9 +128,7 @@ func AnnotateFile(path string) (string,Track) {
 			fmt.Print(err)
 		} else {
 			n,N := m.Track()
-			
-			title,length,t.Year,t.Title = AnalyzeFLAC(path,m,n,N,t.Composers,t.Conductors,t.Performers,t.Genres,t.Samplings)
-			
+			title,length,t.Year,t.Title = AnalyzeFLAC(path,m,n,N,t)
 			f.Close()
 		}
 	}
@@ -169,7 +171,7 @@ func SummarizeAlbum() {
 
 // ****************************************************************
 
-func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,composers,conductors,performers,genres,samplings map[string]int) (string,string,int,string) {
+func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,int,string) {
 
 	var album_title string
 	var duration string
@@ -201,16 +203,16 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,composers,conductors,perfo
 
 	sample,depth := getSampleRate(path)
 	key := fmt.Sprintf("%.1f KHz/%d bits",float64(sample)/1000.0,depth)
-	samplings[key]++
+	t.Samplings[key]++
 
-	Deconstruct(track_artist,composers,conductors,performers)
-	Deconstruct(album_artist,composers,conductors,performers)
-	Deconstruct(composer,composers,conductors,performers)
+	Deconstruct(track_artist,t)
+	Deconstruct(album_artist,t)
+	Deconstruct(composer,t)
 
 // producer/engineer/artist/choir/solo/orchestra
 
 
-	genres[genre]++
+	t.Genres[genre]++
 
 
 	return album_title,duration,year,track_name
@@ -269,45 +271,51 @@ func PrintMap(m map[string]int) string {
 
 // ****************************************************************
 
-func Deconstruct(annotation string,composers,conductors,performers map[string]int) {
+func Deconstruct(annotation string,t Track) {
 
 	fmt.Printf("DECON: (%s)\n",annotation)
 	
 	// First try to split on intentional packing, either \n or ;
+
 	annotation = strings.ReplaceAll(annotation," and ",",")
 	annotation = strings.ReplaceAll(annotation,"\n",";")
 	annotation = strings.ReplaceAll(annotation,"&",";")
 	annotation = strings.ReplaceAll(annotation,".",";")
-	item := strings.Split(annotation,";")
 
-	for _,c := range item {
+	items := strings.Split(annotation,";")
 
-		c = strings.TrimSpace(c)
-		c = strings.ReplaceAll(c,",","")
+	for _,it := range items {
 
-		if len(c) > 0 {
-			if strings.Contains(strings.ToLower(c),"conductor") {
-				c = strings.ReplaceAll(c,"conductor","")
-				c = strings.ReplaceAll(c,"Conductor","")
-				c = strings.TrimSpace(c)
-				conductors[c]++
-				continue
-			}
+		if CheckFor("Conductor",it,t.Conductors) {
+			continue
+		}
 
-			if strings.Contains(strings.ToLower(c),"composer") {
-				c = strings.ReplaceAll(c,"composer","")
-				c = strings.ReplaceAll(c,"Composer","")
-				c = strings.TrimSpace(c)
-				if len(c) > 0 {
-					composers[c]++
-				}
-				continue
-			}
-
-			if len(c) > 0 {
-				performers[c]++
-			}
+		if CheckFor("Composer",it,t.Composers) {
+			continue
+		}
+		
+		if len(it) > 0 {
+			it = strings.TrimSpace(it)
+			t.Performers[it]++
 		}
 	}
 }
 
+// ****************************************************************
+
+func CheckFor(role string,item string,record map[string]int) bool {
+
+	item = strings.TrimSpace(item)
+	item = strings.ReplaceAll(item,",","")
+	
+	if len(item) > 0 {
+		if strings.Contains(strings.ToLower(item),role) {
+			item = strings.ReplaceAll(item,role,"")
+			item = strings.ReplaceAll(item,strings.ToLower(role),"")
+			item = strings.TrimSpace(item)
+			record[item]++
+			return true
+		}
+	}
+	return false
+}
