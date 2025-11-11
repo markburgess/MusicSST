@@ -23,42 +23,35 @@ import (
 	"github.com/go-flac/go-flac/v2"
 )
 
+//******************************************************************
+
+type Track struct {
+
+	Title string
+	Duration string
+	Year int
+	Samplings map[string]int
+	Composers map[string]int
+	Conductors map[string]int
+	Performers map[string]int
+	Genres map[string]int
+}
+
 var ALBUM_COUNTER int
-
-		/*
-		fmt.Println("TRACK-NAME:",m.Title()) // string
-		fmt.Println("ALBUM-NAME:",m.Album()) // string
-		fmt.Println("TRACK-ARTIST:",m.Artist()) // string
-		fmt.Println("ALBUM-ARTIST:",m.AlbumArtist()) // string
-		fmt.Println("COMPOSER:",m.Composer()) // string
-		fmt.Println("YEAR:",m.Year()) // int		
-		n,N := m.Track() // (int, int) // Number, Total
-		fmt.Println("TRACK:",n,"of",N) */
-
-		/* These fields are typically noise
-		fmt.Println("COMMENT:",m.Comment()) // string 
-		fmt.Println("GENRE:",m.Genre()) // string
-		fmt.Println(Disc()) // (int, int) // Number, Total
-		fmt.Println("IMG",m.Picture()) // *Picture // Artwork
-		fmt.Println("LYRIC:",m.Lyrics()) // string
-		t := m.Raw()
-		for i,j := range t {
-			fmt.Printf("RAW - Key: %s = %s\n",i,j)
-		}*/
+var CURRENT_ALBUM string
+var COLLECTION = make(map[string][]Track)
 
 //******************************************************************
 
 func main() {
 
-	AnnotateFile("/home/mark/TESTFLAC1.flac")
+	//AnnotateFile("/home/mark/TESTFLAC1.flac")
+	//AnnotateFile("/home/mark/TESTFLAC2.flac")
+	//AnnotateFile("/home/mark/TESTFLAC3.flac")
 
-	AnnotateFile("/home/mark/TESTFLAC2.flac")
+	//return
 
-	AnnotateFile("/home/mark/TESTFLAC3.flac")
-
-	return
-
-	rootPath := "/mnt/Recordings"
+	rootPath := "/mnt/Recordings/Ralph-Vaughan-Williams/" // Vaughan-Williams-Symphony-No2-A-London-Symphony-and-Symphony-No8/"
 	
 	err := filepath.WalkDir(rootPath, func(path string, d fs.DirEntry, err error) error {
 
@@ -72,16 +65,25 @@ func main() {
 			if strings.Contains(path,"/.") {
 				return nil
 			}
-			fmt.Printf("Entering: %s----> %s\n",path,d.Name())
+			fmt.Printf("\nEntering: %s\n",d.Name())
 		} else {
 			file := filepath.Base(path) 
-			if strings.HasPrefix(file,".") || strings.HasPrefix(file,":") {
+
+			if strings.HasPrefix(file,".") || strings.HasPrefix(file,":") || strings.HasSuffix(file,"pdf") || strings.HasSuffix(file,"png") || strings.HasSuffix(file,"jpg")  {
 				return nil
 			}
 
-			ALBUM_COUNTER++
-			AnnotateFile(path)
+			title,track := AnnotateFile(path)
 
+			if len(title) > 0 {
+				COLLECTION[title] = append(COLLECTION[title],track)
+
+				if title != CURRENT_ALBUM {
+					fmt.Println("New album:",title)
+					CURRENT_ALBUM = title
+					ALBUM_COUNTER++
+				}
+			}
 		}
 		return nil // Return nil to continue traversal
 	})
@@ -89,118 +91,129 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error walking directory: %v", err)
 	}
+
+
+	for all := range COLLECTION {
+		fmt.Println("--",all)
+		fmt.Println(COLLECTION[all])
+	}
 }
 
 //******************************************************************
 
-func AnnotateFile(path string) {
+func AnnotateFile(path string) (string,Track) {
 
-	var stanzas []string
-	var sampling = make(map[string]int)
-	var composers = make(map[string]int)
-	var performers = make(map[string]int)
-	var genres = make(map[string]int)
-	var titles  = make(map[string]int)
+	var t Track
+	var title string = "errors"
+	var length string
+
+	t.Samplings = make(map[string]int)
+	t.Composers = make(map[string]int)
+	t.Conductors = make(map[string]int)
+	t.Performers = make(map[string]int)
+	t.Genres = make(map[string]int)
 
 	f, err := os.Open(path)
-
-	m, err := tag.ReadFrom(f)
-
+	
 	if err != nil {
 		fmt.Print(err)
 	} else {
+		m, err := tag.ReadFrom(f)
 
-		n,N := m.Track()
-
-		stanzas = append(stanzas,AnalyzeFLAC(path,m.Genre(),m.Album(),m.Year(),m.Title(),n,N,m.AlbumArtist(),m.Artist(),m.Composer(),sampling,composers,performers,genres,titles))
-
-	f.Close()
+		if err != nil {
+			fmt.Print(err)
+		} else {
+			n,N := m.Track()
+			
+			title,length,t.Year,t.Title = AnalyzeFLAC(path,m,n,N,t.Composers,t.Conductors,t.Performers,t.Genres,t.Samplings)
+			
+			f.Close()
+		}
 	}
 
-	fmt.Println("\n",PrintMap(titles))
-	fmt.Println("    \"   ",PrintMap(genres))
-	fmt.Println("    \"   (music by)",PrintMap(composers))
-	fmt.Println("    \"   (sample rate) ",PrintMap(sampling))
+	t.Duration = length
 
-	fmt.Println("\n  +:: _sequence_ ::\n")
-
-	for _,s := range stanzas {
-		fmt.Println(s)
-	}
-
-	fmt.Println("\n  -:: _sequence_ ::\n")
+	return title,t
 }
 
 // ****************************************************************
 
-func AnalyzeFLAC(path,genre,album string,year int,track string,n,tot int,album_artist,track_artist,composer string,sampling,composers,performers,genres,titles map[string]int) string {
+func SummarizeAlbum() {
 
-	var stanza string
-	//var title string
-	//var conductor string
-	//var performer string
+/*	fmt.Println("\n",PrintMap(titles))
+	fmt.Println("    \"   ",PrintMap(genres))
+	fmt.Println("    \"   (music by)",PrintMap(composers))
+	fmt.Println("    \"   (sample rate) ",PrintMap(samplings))
 
-	track_name := fmt.Sprintf("%d. '%s'",n,track)
-	track_length,_ := getTrackLength(path)
-	sample,depth := getSampleRate(path)
+	fmt.Println("\n  +:: _sequence_ ::\n")
+
+	for _,s := range album_level_notes {
+		fmt.Println(s)
+	}
+
+	fmt.Println("\n  -:: _sequence_ ::\n")
 
 	// *******
 
 	stanza += fmt.Sprintln(track_name," (track_in) ",album)
+	stanza += fmt.Sprintln(track_name," (release date) ",year)
 
-	titles[album]++
-	
+	stanza += fmt.Sprintf("    \"    (composer) %%'%s'\n",c)
+	stanza += fmt.Sprintf("    \"    (performed by) %%'%s'\n",c)
+	stanza += fmt.Sprintf("    \"    (genre) %%'%s'\n",strings.TrimSpace(c))
+
+*/
+
+
+}
+
+// ****************************************************************
+
+func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,composers,conductors,performers,genres,samplings map[string]int) (string,string,int,string) {
+
+	var album_title string
+	var duration string
+
+	// From the metadata
+
+	genre := m.Genre()
+	year := m.Year()
+	track := m.Title()
+	album_artist := m.AlbumArtist()
+	track_artist := m.Artist()
+	composer := m.Composer()
+	album := m.Album()
+	album_title = strings.TrimSpace(album)	
+
+	// Make sure we encapsulate tracks with number, since tracks may collide with album
+
+	track_name := fmt.Sprintf("%d. '%s'",n,track)
+
+	track_length,_ := getTrackLength(path)
 	mins := track_length / time.Minute
 	secs := track_length % time.Minute / time.Second
 
-	stanza += fmt.Sprintf("    \"    (length) %d:%d\n",mins,secs)
-
-	if len(composer) > 0 {
-		composer = strings.ReplaceAll(composer," and ",",")
-		cmps := strings.Split(composer,",")
-		for _,c := range cmps {
-			if len(c) > 0 {
-				stanza += fmt.Sprintf("    \"    (composer) %%'%s'\n",strings.TrimSpace(c))
-				composers[c]++
-			}
-		}
+	if secs < 10 {
+		duration = fmt.Sprintf("%d:0%d\n",mins,secs)
+	} else {
+		duration = fmt.Sprintf("%d:%d\n",mins,secs)
 	}
 
-	// *******
-
-	TryToExtract(track_artist)
-
-	if len(track_artist) > 0 {
-		track_artist = strings.ReplaceAll(track_artist," and ",",")
-		cmps := strings.Split(track_artist,",")
-		for _,c := range cmps {
-			if len(c) > 0 {
-				stanza += fmt.Sprintf("    \"    (performed by) %%'%s'\n",strings.TrimSpace(c))
-				performers[c]++
-			}
-		}
-	}
-
-	// *******
-
-	if len(genre) > 0 {
-		genre = strings.ReplaceAll(genre," and ",",")
-		cmps := strings.Split(genre,",")
-		for _,c := range cmps {
-			if len(c) > 0 {
-				stanza += fmt.Sprintf("    \"    (genre) %%'%s'\n",strings.TrimSpace(c))
-				genres[c]++
-			}
-		}
-	}
-
+	sample,depth := getSampleRate(path)
 	key := fmt.Sprintf("%.1f KHz/%d bits",float64(sample)/1000.0,depth)
-	sampling[key]++
+	samplings[key]++
 
-        stanza += fmt.Sprintln("    \"    (conductor)    ?")
-        stanza += fmt.Sprintln("    \"    (performance)  ?")
+	Deconstruct(track_artist,composers,conductors,performers)
+	Deconstruct(album_artist,composers,conductors,performers)
+	Deconstruct(composer,composers,conductors,performers)
 
-	return stanza
+// producer/engineer/artist/choir/solo/orchestra
+
+
+	genres[genre]++
+
+
+	return album_title,duration,year,track_name
 }
 
 // ****************************************************************
@@ -256,9 +269,45 @@ func PrintMap(m map[string]int) string {
 
 // ****************************************************************
 
-func TryToExtract(s string) {
+func Deconstruct(annotation string,composers,conductors,performers map[string]int) {
 
-	fmt.Println("ANALYZE",s)
+	fmt.Printf("DECON: (%s)\n",annotation)
+	
+	// First try to split on intentional packing, either \n or ;
+	annotation = strings.ReplaceAll(annotation," and ",",")
+	annotation = strings.ReplaceAll(annotation,"\n",";")
+	annotation = strings.ReplaceAll(annotation,"&",";")
+	annotation = strings.ReplaceAll(annotation,".",";")
+	item := strings.Split(annotation,";")
 
+	for _,c := range item {
+
+		c = strings.TrimSpace(c)
+		c = strings.ReplaceAll(c,",","")
+
+		if len(c) > 0 {
+			if strings.Contains(strings.ToLower(c),"conductor") {
+				c = strings.ReplaceAll(c,"conductor","")
+				c = strings.ReplaceAll(c,"Conductor","")
+				c = strings.TrimSpace(c)
+				conductors[c]++
+				continue
+			}
+
+			if strings.Contains(strings.ToLower(c),"composer") {
+				c = strings.ReplaceAll(c,"composer","")
+				c = strings.ReplaceAll(c,"Composer","")
+				c = strings.TrimSpace(c)
+				if len(c) > 0 {
+					composers[c]++
+				}
+				continue
+			}
+
+			if len(c) > 0 {
+				performers[c]++
+			}
+		}
+	}
 }
 
