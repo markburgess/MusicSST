@@ -115,8 +115,6 @@ func ScanDirectories(fp io.Writer) {
 		log.Fatalf("Error walking directory: %v", err)
 	}
 
-	fmt.Println("############## N4L SUMMARY ####################")
-
 	for all := range COLLECTION {
 
 		fmt.Fprintln(fp,"\n  ###################################\n ")
@@ -356,10 +354,7 @@ func PrintMap(m map[string]int) string {
 
 func Deconstruct(annotation string,t Track,fallback string) {
 
-	// This describes the logic of inference
-
-	fmt.Printf("\nDECODE: (%s)\n",annotation)
-	
+	// This describes the logic of inference	
 	// First try to split on intentional packing, either \n or ;
 
 	annotation = strings.ReplaceAll(annotation," and ",";")
@@ -406,13 +401,6 @@ func Deconstruct(annotation string,t Track,fallback string) {
 		}
 
 		CheckFor("Performer",it,defmap)
-
-/*		it = strings.TrimSpace(it)
-
-		if len(it) > 0 {
-			defmap[it]++
-			fmt.Printf("\n  -- Extracted %s for %s\n",it,fallback)
-		}*/
 	}
 }
 
@@ -435,7 +423,7 @@ func CheckFor(role string,item string,record map[string]int) bool {
 			item = strings.ReplaceAll(item,"Artist","")
 			item = strings.TrimSpace(item)
 			record[item]++
-			fmt.Printf("\n  -- Extracted %s for %s\n",item,role)
+			fmt.Printf("  -- Extracted %s for %s\n",item,role)
 			return true
 		}
 	}
