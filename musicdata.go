@@ -48,7 +48,7 @@ type Track struct {
 var ALBUM_COUNTER int
 var CURRENT_ALBUM string
 var COLLECTION = make(map[string][]Track)
-var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer"}
+var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer","Studio"}
 
 //******************************************************************
 
@@ -216,7 +216,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	})
 
 	for i,_ := range t {
-		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track_in) ",Esc(title))
+		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track in) ",Esc(title))
 		fmt.Fprintln(fp,"     \"     (duration) ",t[i].Duration)
 		Add(fp,1,allsample,"sample rate")
 		Add(fp,1,allcomposers,"composer")
@@ -366,6 +366,8 @@ func Deconstruct(annotation string,t Track) {
 	// First try to split on intentional packing, either \n or ;
 	// Then we need to do 2 passes, splitting or not splitting on comma ,
 	// because comma is used in multiple ways
+
+	fmt.Println("\n( Deconstruct",annotation,")")
 
 	annotation = strings.ReplaceAll(annotation," and ",";")
 	annotation = strings.ReplaceAll(annotation,"\n",";")
