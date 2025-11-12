@@ -251,7 +251,7 @@ func Add(fp io.Writer,lim int,attrib map[string]int,relation string) {
 	if len(attrib) > lim {
 
 		for p := range attrib {
-			fmt.Fprintf(fp,"    \"    (%s) %%'%s'\n",relation,p)
+			fmt.Fprintf(fp,"    \"    (%s) '%s'\n",relation,p)
 		}
 	}
 }
