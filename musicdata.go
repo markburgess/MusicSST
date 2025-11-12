@@ -42,11 +42,13 @@ type Track struct {
 	Producer  map[string]int
 	Choir  map[string]int
 	Genres map[string]int
+	Unknowns map[string]int
 }
 
 var ALBUM_COUNTER int
 var CURRENT_ALBUM string
 var COLLECTION = make(map[string][]Track)
+var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer"}
 
 //******************************************************************
 
@@ -139,6 +141,7 @@ func AnnotateFile(path string) (string,Track) {
 	t.Producer  = make(map[string]int)
 	t.Choir   = make(map[string]int)
 	t.Genres = make(map[string]int)
+	t.Unknowns = make(map[string]int)
 
 	f, err := os.Open(path)
 	
@@ -178,6 +181,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	var allprod = make(map[string]int)
 	var allchoir = make(map[string]int)
 	var allgenre = make(map[string]int)
+	var allknow = make(map[string]int)
 
 	for i,_ := range t {
 		MergeMaps(allcomposers,t[i].Composers)
@@ -189,6 +193,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		MergeMaps(alleng,t[i].Engineer)
 		MergeMaps(allprod,t[i].Producer)
 		MergeMaps(allgenre,t[i].Genres)
+		MergeMaps(allknow,t[i].Unknowns)
 	}
 
 	Add(fp,0,allsample,"sample rate")
@@ -200,6 +205,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	Add(fp,0,alleng,"engineer")
 	Add(fp,0,allprod,"producer")
 	Add(fp,0,allgenre,"genre")
+	Add(fp,0,allknow,"undecipherable role")
 
 	// ******
 
@@ -221,6 +227,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		Add(fp,1,alleng,"engineer")
 		Add(fp,1,allprod,"producer")
 		Add(fp,1,allgenre,"genre")
+		Add(fp,1,allknow,"undecipherable role")
 	}
 
 	fmt.Fprintln(fp,"\n  -:: _sequence_ ::\n")
@@ -242,6 +249,7 @@ func Esc(s string) string {
 func Add(fp io.Writer,lim int,attrib map[string]int,relation string) {
 
 	if len(attrib) > lim {
+
 		for p := range attrib {
 			fmt.Fprintf(fp,"    \"    (%s) %%'%s'\n",relation,p)
 		}
@@ -292,9 +300,9 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// No try to decode the broken metadata
 
-	Deconstruct(track_artist,t,"Performer")
-	Deconstruct(album_artist,t,"Composer")
-	Deconstruct(composer,t,"Composer")
+	Deconstruct(track_artist,t)
+	Deconstruct(album_artist,t)
+	Deconstruct(composer,t)
 
 	return album_title,duration,year,track_name
 }
@@ -352,10 +360,12 @@ func PrintMap(m map[string]int) string {
 
 // ****************************************************************
 
-func Deconstruct(annotation string,t Track,fallback string) {
+func Deconstruct(annotation string,t Track) {
 
-	// This describes the logic of inference	
+	// This describes the logic of inference (i.e. hackery) to decode intent in metadata
 	// First try to split on intentional packing, either \n or ;
+	// Then we need to do 2 passes, splitting or not splitting on comma ,
+	// because comma is used in multiple ways
 
 	annotation = strings.ReplaceAll(annotation," and ",";")
 	annotation = strings.ReplaceAll(annotation,"\n",";")
@@ -364,66 +374,125 @@ func Deconstruct(annotation string,t Track,fallback string) {
 
 	items := strings.Split(annotation,";")
 
-	for _,it := range items {
+	// Split commas first
 
-		if CheckFor("Conductor",it,t.Conductors) {
+	for _,item := range items {
+
+		var done bool = false
+
+		subs := strings.Split(item,",")
+
+		for _,it := range subs {
+			done = DoChecks(it,t) || done
+		}
+
+		if done {
 			continue
 		}
 
-		if CheckFor("Composer",it,t.Composers) {
-			continue
+		if !DoChecks(item,t) {
+			
+			// If we still have commma separated, split them as they are unlabelled
+			
+			subi := strings.Split(item,",")
+			
+			for _,i := range subi {				
+				i = strings.TrimSpace(i)
+				CheckFor("Unknown",i,t.Unknowns)
+			}
+			
 		}
-
-		if CheckFor("Orchestra",it,t.Orchestra) {
-			continue
-		}
-
-		if CheckFor("Engineer",it,t.Engineer) {
-			continue
-		}
-
-		if CheckFor("Producer",it,t.Producer) {
-			continue
-		}
-
-		var defmap map[string]int
-
-		if len(t.Composers) > 0 {
-			defmap = t.Performers
-		}
-
-		switch fallback	{
-		case "Composer":
-			defmap = t.Composers
-			break
-		default:
-			defmap = t.Performers
-		}
-
-		CheckFor("Performer",it,defmap)
 	}
+}
+
+// ****************************************************************
+
+func DoChecks(item string,t Track) bool {
+
+	strings.TrimSpace(item)
+
+	// Order matters, due to overriding
+
+	if CheckFor("Orchestra",item,t.Orchestra) {
+		return true
+	}
+
+	if CheckFor("Engineer",item,t.Engineer) {
+		return true
+	}
+	
+	if CheckFor("Producer",item,t.Producer) {
+		return true
+	}
+
+	if CheckFor("Conductor",item,t.Conductors) {
+		return true
+	}
+	
+	if CheckFor("Composer",item,t.Composers) {
+		return true
+	}
+
+	if CheckFor("Unknown",item,t.Unknowns) {
+		return false
+	}
+
+	return false
 }
 
 // ****************************************************************
 
 func CheckFor(role string,item string,record map[string]int) bool {
 
+	var match bool
+
 	item = strings.TrimSpace(item)
 	
 	if len(item) > 0 {
-		spec := strings.Contains(item,role)
-		lowercase := strings.Contains(strings.ToLower(item),role)
-		performer := role == "Performer"
+		
+		if !match && role == "Orchestra" {
+			match = strings.Contains(item,"Philharmonic") || strings.Contains(item,"Symfon")
+		} else if role != "Unknown" {
+			match = strings.Contains(item,role) || strings.Contains(strings.ToLower(item),role)
+		} else {
+			match = true
+		}
 
-		if spec || lowercase || performer {
+		if match {
 			item = strings.ReplaceAll(item,role,"")
 			item = strings.ReplaceAll(item,strings.ToLower(role),"")
-			item = strings.ReplaceAll(item,",","")
 			item = strings.ReplaceAll(item,"MainArtist","")
 			item = strings.ReplaceAll(item,"Artist","")
+			item = strings.ReplaceAll(item,"  "," ")
+
+			if strings.Contains(item," ,") {
+				sub := strings.Split(item," ,")
+				item = sub[0]
+			}
+
 			item = strings.TrimSpace(item)
-			record[item]++
-			fmt.Printf("  -- Extracted %s for %s\n",item,role)
+
+			if record[item] > 0 {
+				return true
+			}
+
+			if len(item) > 0 && !Ignore(item) {
+				record[item]++
+				fmt.Printf("  -- Extracted %s for %s\n",item,role)
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+// ****************************************************************
+
+func Ignore(str string) bool {
+
+	for _,s := range IGNORE {
+		if s == str {
 			return true
 		}
 	}
@@ -438,3 +507,4 @@ func MergeMaps(target,source map[string]int) {
 		target[key]++
 	}
 }
+
