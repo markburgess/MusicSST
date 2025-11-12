@@ -54,9 +54,9 @@ var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer","
 
 func main() {
 
-	//AnnotateFile("/home/mark/TESTFLAC1.flac")
-	//AnnotateFile("/home/mark/TESTFLAC2.flac")
-	//AnnotateFile("/home/mark/TESTFLAC3.flac")
+	AnnotateFile("/home/mark/TESTFLAC1.flac")
+	AnnotateFile("/home/mark/TESTFLAC2.flac")
+	AnnotateFile("/home/mark/TESTFLAC3.flac")
 
 	fp, err := os.Create("output.txt")
 
@@ -76,6 +76,8 @@ func main() {
 func ScanDirectories(fp io.Writer) {
 
 	rootPath := "/mnt/Recordings/Ralph-Vaughan-Williams/"
+
+	//rootPath := "/mnt/Recordings/Rush/"
 	
 	err := filepath.WalkDir(rootPath, func(path string, d fs.DirEntry, err error) error {
 
@@ -264,6 +266,8 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 	var duration string
 
 	// From the metadata
+
+	//PrintRaw(m)
 
 	genre := m.Genre()
 	year := m.Year()
@@ -510,3 +514,17 @@ func MergeMaps(target,source map[string]int) {
 	}
 }
 
+// ****************************************************************
+
+func PrintRaw(m tag.Metadata) {
+
+	fmt.Println("ALBUM:",m.Album())
+	fmt.Println("GENRE:", m.Genre())
+	fmt.Println("YEAR:", m.Year())
+	fmt.Println("TITLE:", m.Title())
+	fmt.Println("ALBUM ARTIST:", m.AlbumArtist())
+	fmt.Println("ARTIST:",m.Artist())
+	fmt.Println("COMPOSER:",m.Composer())
+
+
+}
