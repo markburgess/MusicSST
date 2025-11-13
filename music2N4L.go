@@ -267,7 +267,7 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// From the metadata
 
-	//PrintRaw(m)
+	PrintRaw(m)
 
 	genre := m.Genre()
 	year := m.Year()
