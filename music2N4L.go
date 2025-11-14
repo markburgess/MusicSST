@@ -31,6 +31,7 @@ type Track struct {
 
 	N int
 	Title string
+	Img string
 	Duration string
 	Year int
 	Samplings map[string]int
@@ -45,8 +46,8 @@ type Track struct {
 	Unknowns map[string]int
 }
 
-var ALBUM_COUNTER int
 var CURRENT_ALBUM string
+var CURRENT_IMAGE string
 var COLLECTION = make(map[string][]Track)
 var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer","Studio"}
 
@@ -75,11 +76,13 @@ func main() {
 
 func ScanDirectories(fp io.Writer) {
 
-	rootPath := "/mnt/Recordings/Ralph-Vaughan-Williams/"
+	root_path := "/mnt/Recordings/Ralph-Vaughan-Williams/"
 
-	//rootPath := "/mnt/Recordings/Rush/"
+	ignore_prefix := "/mnt"
+
+	off := len(ignore_prefix)
 	
-	err := filepath.WalkDir(rootPath, func(path string, d fs.DirEntry, err error) error {
+	err := filepath.WalkDir(root_path, func(path string, d fs.DirEntry, err error) error {
 
 		if err != nil {
 			// Handle errors that occur during directory traversal
@@ -92,10 +95,30 @@ func ScanDirectories(fp io.Writer) {
 				return nil
 			}
 			fmt.Printf("Entering: %s\n",d.Name())
+
+			CURRENT_IMAGE = ""
+			CURRENT_ALBUM = ""
 		} else {
 			file := filepath.Base(path) 
 
-			if strings.HasPrefix(file,".") || strings.HasPrefix(file,":") || strings.HasSuffix(file,"pdf") || strings.HasSuffix(file,"png") || strings.HasSuffix(file,"jpg")  {
+			if strings.HasPrefix(file,".") || strings.HasPrefix(file,":") || strings.HasSuffix(file,"pdf") {
+				return nil
+			}
+
+			// Try to catch a falling album cover ...
+
+			if  strings.HasSuffix(file,".png") || strings.HasSuffix(file,".jpg") {
+
+				switch file {
+				case "Folder.jpg", "folder.jpg","cover.jpg":
+					CURRENT_IMAGE = path[off:]
+				default:
+					if CURRENT_IMAGE != "" {
+						CURRENT_IMAGE = path[off:]
+					}
+				}
+
+				AlbumCover(CURRENT_ALBUM,CURRENT_IMAGE)
 				return nil
 			}
 
@@ -108,7 +131,7 @@ func ScanDirectories(fp io.Writer) {
 				if title != CURRENT_ALBUM {
 					fmt.Println("New album:",title)
 					CURRENT_ALBUM = title
-					ALBUM_COUNTER++
+					AlbumCover(CURRENT_ALBUM,CURRENT_IMAGE)
 				}
 			}
 		}
@@ -123,6 +146,19 @@ func ScanDirectories(fp io.Writer) {
 
 		fmt.Fprintln(fp,"\n  ###################################\n ")
 		SummarizeAlbum(fp,COLLECTION[all],all)
+	}
+}
+
+//******************************************************************
+
+func AlbumCover(title,img string) {
+
+	// Install album cover in an empty track, if we can catch it
+
+	if title != "" && img != "" {
+		var image Track
+		image.Img = img
+		COLLECTION[title] = append(COLLECTION[title],image)
 	}
 }
 
@@ -172,7 +208,7 @@ func AnnotateFile(path string) (string,Track) {
 func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 	fmt.Fprintln(fp,"\n",Esc(title))
-	fmt.Fprintln(fp,"     \"    (release date) ",t[0].Year)
+	fmt.Fprintln(fp,"    \"    (release date) ",t[0].Year)
 
 	var allcomposers = make(map[string]int)
 	var allsample = make(map[string]int)
@@ -184,8 +220,10 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	var allchoir = make(map[string]int)
 	var allgenre = make(map[string]int)
 	var allknow = make(map[string]int)
+	var image string
 
 	for i,_ := range t {
+
 		MergeMaps(allcomposers,t[i].Composers)
 		MergeMaps(allsample,t[i].Samplings)
 		MergeMaps(allconduct,t[i].Conductors)
@@ -196,6 +234,13 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		MergeMaps(allprod,t[i].Producer)
 		MergeMaps(allgenre,t[i].Genres)
 		MergeMaps(allknow,t[i].Unknowns)
+		if t[i].Img != "" {
+			image = t[i].Img
+		}
+	}
+
+	if image != "" {
+		fmt.Fprintf(fp,"    \"    (img) \"%s\"\n",image)
 	}
 
 	Add(fp,0,allsample,"sample rate")

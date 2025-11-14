@@ -3,15 +3,21 @@
  
 
  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
-     "    (release date)  2023
+    "    (release date)  2023
+    "    (img) "/Recordings/Ralph-Vaughan-Williams/Vaughan Williams Job A Masque for Dancing, Old King Cole - An Orchestral Ballet, The Running Set/folder.jpg"
     "    (sample rate) '96.0 KHz/24 bits'
     "    (orchestra) 'Royal Liverpool Philharmonic'
     "    (genre) 'Classical'
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
   +:: _sequence_ ::
 
+
+   (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
+     "     (duration)  
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  1. 'Job "A Masque for Dancing", Scene I: Introduction - Pastoral Dance - Satan's Appeal to God - Saraband of the Sons of God'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  10:33
@@ -22,26 +28,26 @@
  2. 'Job "A Masque for Dancing", Scene II: Satans Dance of Triumph'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  3:19
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  3. 'Job "A Masque for Dancing", Scene III: Minuet of the Sons of Job and their Wives - Minuet of the Sons and Daughters of Job'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  4:38
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  4. 'Job "A Masque for Dancing", Scene IV: Job's Dream - Dance of Plague, Pestilence, Famine and Battle'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  4:15
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  5. 'Job "A Masque for Dancing", Scene V: Dance of the Three Messengers'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  5:26
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  6. 'Job "A Masque for Dancing", Scene VI: Dance of Job's Comforters - Job's Curse - A Vision of Satan'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  5:31
@@ -64,20 +70,20 @@
  9. 'Job "A Masque for Dancing", Scene IX: Epilogue'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  3:09
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  10. 'Old King Cole, A Ballet for Orchestra: I. Introduction: Allegro moderato'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  1:31
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  11. 'Old King Cole, A Ballet for Orchestra: II. Royal Fanfare, King Enters'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  1:30
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  12. 'Old King Cole, A Ballet for Orchestra: III. Pipe Dance'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  2:58
@@ -88,20 +94,20 @@
  13. 'Old King Cole, A Ballet for Orchestra: IV. Bowl Dance'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  1:31
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  14. 'Old King Cole, A Ballet for Orchestra: V. 1st Fiddler Enters Dancing'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  1:35
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  15. 'Old King Cole, A Ballet for Orchestra: VI. King is Bored and Goes to Sleep'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  2:45
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  16. 'Old King Cole, A Ballet for Orchestra: VII. Entry of the 3rd Fiddler, Followed by Grotesque and Little Boys'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  0:50
@@ -112,14 +118,14 @@
  17. 'Old King Cole, A Ballet for Orchestra: VIII. King Comes Down from His Throne'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  5:53
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  18. 'Old King Cole, A Ballet for Orchestra: IX. Fiddler Slowly Moves Across Stage'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  1:48
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  19. 'The Running Set [Founded on Traditional Dance Tunes]'  (track in)  Vaughan Williams: Job "A Masque for Dancing", Old King Cole - An Orchestral Ballet, The Running Set
      "     (duration)  6:31
@@ -134,7 +140,8 @@
  
 
  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
-     "    (release date)  2018
+    "    (release date)  2018
+    "    (img) "/Recordings/Ralph-Vaughan-Williams/Vaughan Williams Lark Ascending, A Sea Symphony (Symphony No1)/cover.jpg"
     "    (sample rate) '96.0 KHz/24 bits'
     "    (orchestra) 'Royal Liverpool Philharmonic'
     "    (genre) 'Classical'
@@ -145,12 +152,18 @@
   +:: _sequence_ ::
 
 
+   (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
+     "     (duration)  
+    "    (undecipherable role) 'James Ehnes'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
+
  1. 'A Sea Symphony [Symphony No. 1]: I. A Song for All Seas, All Ships.'  (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
      "     (duration)  17:42
 
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'James Ehnes'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  2. 'A Sea Symphony [Symphony No. 1]: II. On The Beach At Night, Alone'  (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
      "     (duration)  10:14
@@ -162,23 +175,23 @@
  3. 'A Sea Symphony [Symphony No. 1]: III. Scherzo - The Waves'  (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
      "     (duration)  7:34
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'James Ehnes'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  4. 'A Sea Symphony [Symphony No. 1]: IV. The Explorers'  (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
      "     (duration)  27:25
 
+    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'James Ehnes'
-    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  5. 'The Lark Ascending'  (track in)  Vaughan Williams: Lark Ascending, A Sea Symphony [Symphony No1]
      "     (duration)  14:32
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'James Ehnes'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
   -:: _sequence_ ::
 
@@ -187,15 +200,21 @@
  
 
  Vaughan Williams Symphony No.5 / Symphony No.6
-     "    (release date)  2018
+    "    (release date)  2018
+    "    (img) "/Recordings/Ralph-Vaughan-Williams/Vaughan Williams Symphony No.5  Symphony No.6/folder.jpg"
     "    (sample rate) '96.0 KHz/24 bits'
     "    (orchestra) 'Royal Liverpool Philharmonic'
     "    (genre) 'Symphonic Music'
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
   +:: _sequence_ ::
 
+
+   (track in)  Vaughan Williams Symphony No.5 / Symphony No.6
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  1. 'Symphony No. 5 in D Major: I. Preludio'  (track in)  Vaughan Williams Symphony No.5 / Symphony No.6
      "     (duration)  11:00
@@ -242,8 +261,8 @@
  8. 'Symphony No. 6 in E Minor: IV. Epilogue - Moderato'  (track in)  Vaughan Williams Symphony No.5 / Symphony No.6
      "     (duration)  10:03
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
   -:: _sequence_ ::
 
@@ -252,7 +271,8 @@
  
 
  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
-     "    (release date)  2019
+    "    (release date)  2019
+    "    (img) "/Recordings/Ralph-Vaughan-Williams/Vaughan-Williams-Sinfonia-Antartica-Symphony-No-9/small_cover.png"
     "    (sample rate) '96.0 KHz/24 bits'
     "    (composer) 'Ralph Vaughan Williams,'
     "    (conductor) 'Andrew Manze,'
@@ -260,145 +280,184 @@
     "    (engineer) 'Philip Rowlands,'
     "    (producer) 'Andrew Keener, Studio'
     "    (genre) 'Classique'
+    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'AAndRAdministrator'
     "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
-    "    (undecipherable role) 'Ralph Vaughan Williams'
-    "    (undecipherable role) 'Andrew Manze'
-    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
   +:: _sequence_ ::
 
 
- 1. 'Symphony No. 7 "Sinfonia Antartica": I. Prelude - Andante maestoso'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
-     "     (duration)  11:06
-
-    "    (undecipherable role) 'StudioProducer'
+   (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
+     "     (duration)  
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
-    "    (undecipherable role) 'AAndRAdministrator'
-    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'StudioProducer'
     "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+
+   (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
+     "     (duration)  
+    "    (undecipherable role) 'Timothy West'
+    "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
     "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+
+   (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
+     "     (duration)  
+    "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Timothy West'
+    "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
+
+ 1. 'Symphony No. 7 "Sinfonia Antartica": I. Prelude - Andante maestoso'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
+     "     (duration)  11:06
+
+    "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Timothy West'
+    "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  2. 'Symphony No. 7 "Sinfonia Antartica": II. Scherzo moderato'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  5:24
 
-    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'AAndRAdministrator'
     "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
-    "    (undecipherable role) 'Ralph Vaughan Williams'
-    "    (undecipherable role) 'Andrew Manze'
-    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  3. 'Symphony No. 7 "Sinfonia Antartica": III. Landscape - Lento'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  10:57
 
-    "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
-    "    (undecipherable role) 'AAndRAdministrator'
-    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'StudioProducer'
     "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
 
  4. 'Symphony No. 7 "Sinfonia Antartica": IV. Intermezzo - Andante sostenuto'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  6:20
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
-    "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
-    "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
-    "    (undecipherable role) 'Timothy West'
-    "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'AAndRAdministrator'
     "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Timothy West'
+    "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  5. 'Symphony No. 7 "Sinfonia Antartica": V. Epilogue - Alla marcia, moderato [non troppo allegro]'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  9:01
 
+    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'AAndRAdministrator'
     "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
-    "    (undecipherable role) 'Ralph Vaughan Williams'
-    "    (undecipherable role) 'Andrew Manze'
-    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
  6. 'Symphony No. 9 in E Minor: I. Moderato maestoso'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  10:55
 
-    "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
-    "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
-    "    (undecipherable role) 'AAndRAdministrator'
-    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'StudioProducer'
     "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Timothy West'
 
  7. 'Symphony No. 9 in E Minor: II. Andante sostenuto'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  8:52
 
-    "    (undecipherable role) 'Timothy West'
-    "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
-    "    (undecipherable role) 'AAndRAdministrator'
-    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
     "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
     "    (undecipherable role) 'Andrew Keener'
+    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Timothy West'
+    "    (undecipherable role) 'Timothy West,'
     "    (undecipherable role) 'StudioProducer'
 
  8. 'Symphony No. 9 in E Minor: III. Scherzo - Allegro pesante'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  5:49
 
-    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
+    "    (undecipherable role) 'StudioProducer'
     "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
     "    (undecipherable role) 'Matthew Cosgrove'
+    "    (undecipherable role) 'AAndRAdministrator'
+    "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
     "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
-    "    (undecipherable role) 'Philip Rowlands'
-    "    (undecipherable role) 'AAndRAdministrator'
 
  9. 'Symphony No. 9 in E Minor: IV. Andante tranquillo'  (track in)  Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Sinfonia Antartica, Symphony No. 9
      "     (duration)  15:05
 
-    "    (undecipherable role) 'Philip Rowlands'
+    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'AAndRAdministrator'
     "    (undecipherable role) 'Matthew Cosgrove, AAndRAdministrator'
-    "    (undecipherable role) 'Ralph Vaughan Williams'
-    "    (undecipherable role) 'Andrew Manze'
-    "    (undecipherable role) 'Matthew Cosgrove'
     "    (undecipherable role) 'Andrew Keener'
-    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Philip Rowlands'
     "    (undecipherable role) 'Timothy West'
     "    (undecipherable role) 'Timothy West,'
+    "    (undecipherable role) 'StudioProducer'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+    "    (undecipherable role) 'Andrew Manze'
 
   -:: _sequence_ ::
 
@@ -407,7 +466,8 @@
  
 
  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
-     "    (release date)  2016
+    "    (release date)  2016
+    "    (img) "/Recordings/Ralph-Vaughan-Williams/image_medium.png"
     "    (sample rate) '96.0 KHz/24 bits'
     "    (composer) 'Ralph Vaughan Williams,'
     "    (conductor) 'Andrew Manze,'
@@ -418,6 +478,31 @@
 
   +:: _sequence_ ::
 
+
+   (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+
+   (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+
+   (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+
+   (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
+
+   (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
+     "     (duration)  
+    "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  1. 'Symphony No. 2 in G "A London Symphony":I. Lento - Allegro resoluto'  (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
      "     (duration)  14:29
@@ -446,8 +531,8 @@
  5. 'Symphony No. 8 in D minor:I. Fantasia [Variazioni senza Tema]'  (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
      "     (duration)  10:47
 
-    "    (undecipherable role) 'Ralph Vaughan Williams'
     "    (undecipherable role) 'Andrew Manze'
+    "    (undecipherable role) 'Ralph Vaughan Williams'
 
  6. 'Symphony No. 8 in D minor:II. Scherzo alla marcia [per stromenti a fiato] - Allegro alla marcia'  (track in)  Andrew Manze & The Royal Liverpool Philharmonic Orchestra : Vaughan Williams: Symphony No.2 'A London Symphony' & Symphony No.8
      "     (duration)  3:50
