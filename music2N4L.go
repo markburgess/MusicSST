@@ -20,6 +20,7 @@ import (
 	"time"
 	"strings"
 	"sort"
+	"errors"
 	"path/filepath"
         "github.com/dhowden/tag"
 	"github.com/go-flac/go-flac/v2"
@@ -55,11 +56,14 @@ var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer","
 
 func main() {
 
-	AnnotateFile("/home/mark/TESTFLAC1.flac")
-	AnnotateFile("/home/mark/TESTFLAC2.flac")
-	AnnotateFile("/home/mark/TESTFLAC3.flac")
+	name := "output.n4l"
 
-	fp, err := os.Create("output.txt")
+	if FileExists(name) {
+		fmt.Println("File exists - careful!\n")
+		return
+	}
+
+	fp, err := os.Create(name)
 
 	if err != nil {
 		fmt.Println("Error creating file:", err)
@@ -76,7 +80,11 @@ func main() {
 
 func ScanDirectories(fp io.Writer) {
 
-	root_path := "/mnt/Recordings/Ralph-Vaughan-Williams/"
+	// Check Brahms, Andris // Yoyo ma.. Jurowski
+	// Star Trek lala land, artist  "s"
+	// Made In Japan
+
+	root_path := "/mnt/Recordings/"
 
 	ignore_prefix := "/mnt"
 
@@ -87,14 +95,17 @@ func ScanDirectories(fp io.Writer) {
 		if err != nil {
 			// Handle errors that occur during directory traversal
 			fmt.Printf("Error accessing path %s: %v\n", path, err)
-			return err // Return the error to stop further traversal in this branch
+			return nil // Return the error to stop further traversal in this branch
 		}
 		
 		if d.IsDir() {
 			if strings.Contains(path,"/.") {
 				return nil
 			}
-			fmt.Printf("Entering: %s\n",d.Name())
+
+			if strings.Contains(path,"@Recycle") {
+				return nil
+			}
 
 			CURRENT_IMAGE = ""
 			CURRENT_ALBUM = ""
@@ -189,7 +200,7 @@ func AnnotateFile(path string) (string,Track) {
 		m, err := tag.ReadFrom(f)
 
 		if err != nil {
-			fmt.Print(err)
+			fmt.Println("Unable to read",err)
 		} else {
 			n,N := m.Track()
 			t.N = n
@@ -206,6 +217,8 @@ func AnnotateFile(path string) (string,Track) {
 // ****************************************************************
 
 func SummarizeAlbum(fp io.Writer,t []Track,title string) {
+
+	fmt.Println("Summarizing",title)
 
 	fmt.Fprintln(fp,"\n",Esc(title))
 	fmt.Fprintln(fp,"    \"    (release date) ",t[0].Year)
@@ -224,6 +237,11 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 	for i,_ := range t {
 
+		if t[i].Img != "" {
+			image = t[i].Img
+			continue
+		}
+
 		MergeMaps(allcomposers,t[i].Composers)
 		MergeMaps(allsample,t[i].Samplings)
 		MergeMaps(allconduct,t[i].Conductors)
@@ -234,9 +252,6 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		MergeMaps(allprod,t[i].Producer)
 		MergeMaps(allgenre,t[i].Genres)
 		MergeMaps(allknow,t[i].Unknowns)
-		if t[i].Img != "" {
-			image = t[i].Img
-		}
 	}
 
 	if image != "" {
@@ -263,6 +278,10 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	})
 
 	for i,_ := range t {
+		if len(t[i].Title) == 0 {
+			continue
+		}
+
 		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track in) ",Esc(title))
 		fmt.Fprintln(fp,"     \"     (duration) ",t[i].Duration)
 		Add(fp,1,allsample,"sample rate")
@@ -312,7 +331,7 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// From the metadata
 
-	PrintRaw(m)
+	//PrintRaw(m)
 
 	genre := m.Genre()
 	year := m.Year()
@@ -349,9 +368,9 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// No try to decode the broken metadata
 
-	Deconstruct(track_artist,t)
-	Deconstruct(album_artist,t)
-	Deconstruct(composer,t)
+	Deconstruct(track_artist,t,"artist")
+	Deconstruct(album_artist,t,"artist")
+	Deconstruct(composer,t,"composer")
 
 	return album_title,duration,year,track_name
 }
@@ -362,11 +381,14 @@ func GetSampleRate(fileName string) (int,int) {
 
 	f, err := flac.ParseFile(fileName)
 	if err != nil {
-		panic(err)
+		// probably not a flac supported
+		return 0,0
 	}
 	data, err := f.GetStreamInfo()
+
 	if err != nil {
-		panic(err)
+		// probably not a flac supported
+		return 0,0
 	}
 	return data.SampleRate,data.BitDepth
 }
@@ -409,15 +431,28 @@ func PrintMap(m map[string]int) string {
 
 // ****************************************************************
 
-func Deconstruct(annotation string,t Track) {
+func Deconstruct(annotation string,t Track,intended string) {
 
 	// This describes the logic of inference (i.e. hackery) to decode intent in metadata
 	// First try to split on intentional packing, either \n or ;
 	// Then we need to do 2 passes, splitting or not splitting on comma ,
 	// because comma is used in multiple ways
 
-	fmt.Println("\n( Deconstruct",annotation,")")
+	if SimpleEntry(annotation) {
+		switch intended {
+		case "artist":
+			CheckFor("Artist",annotation,t.Performers)
+			return
+		case "composer":
+			CheckFor("Composer",annotation,t.Composers)
+			return
+		}
+	}
 
+	//fmt.Println("\n( Deconstruct",annotation,")")
+
+	annotation = strings.ReplaceAll(annotation,"MainArtist",";")
+	annotation = strings.ReplaceAll(annotation,"AssociatedPerformer",";")
 	annotation = strings.ReplaceAll(annotation," and ",";")
 	annotation = strings.ReplaceAll(annotation,"\n",";")
 	annotation = strings.ReplaceAll(annotation,"&",";")
@@ -454,6 +489,20 @@ func Deconstruct(annotation string,t Track) {
 			
 		}
 	}
+}
+
+// ****************************************************************
+
+func SimpleEntry(entry string) bool {
+
+	checkfor := []string{",",";",":","\n"}
+
+	for _,c := range checkfor {
+		if strings.Contains(entry,c) {
+			return false
+		}
+	}
+	return true
 }
 
 // ****************************************************************
@@ -500,10 +549,10 @@ func CheckFor(role string,item string,record map[string]int) bool {
 	item = strings.TrimSpace(item)
 	
 	if len(item) > 0 {
-		
-		if !match && role == "Orchestra" {
+
+		if role == "Orchestra" {
 			match = strings.Contains(item,"Philharmonic") || strings.Contains(item,"Symfon")
-		} else if role != "Unknown" {
+		} else if role != "Unknown" && role != "Artist" {
 			match = strings.Contains(item,role) || strings.Contains(strings.ToLower(item),role)
 		} else {
 			match = true
@@ -516,8 +565,8 @@ func CheckFor(role string,item string,record map[string]int) bool {
 			item = strings.ReplaceAll(item,"Artist","")
 			item = strings.ReplaceAll(item,"  "," ")
 
-			if strings.Contains(item," ,") {
-				sub := strings.Split(item," ,")
+			if strings.Contains(item,",") {
+				sub := strings.Split(item,",")
 				item = sub[0]
 			}
 
@@ -529,7 +578,7 @@ func CheckFor(role string,item string,record map[string]int) bool {
 
 			if len(item) > 0 && !Ignore(item) {
 				record[item]++
-				fmt.Printf("  -- Extracted %s for %s\n",item,role)
+				//fmt.Printf("  -- Extracted %s for %s\n",item,role)
 				return true
 			}
 		}
@@ -563,6 +612,7 @@ func MergeMaps(target,source map[string]int) {
 
 func PrintRaw(m tag.Metadata) {
 
+	fmt.Println("-------------------")
 	fmt.Println("ALBUM:",m.Album())
 	fmt.Println("GENRE:", m.Genre())
 	fmt.Println("YEAR:", m.Year())
@@ -570,6 +620,21 @@ func PrintRaw(m tag.Metadata) {
 	fmt.Println("ALBUM ARTIST:", m.AlbumArtist())
 	fmt.Println("ARTIST:",m.Artist())
 	fmt.Println("COMPOSER:",m.Composer())
+	fmt.Println("-------------------")
+}
 
+// ****************************************************************
 
+func FileExists(path string) bool {
+
+	info, err := os.Stat(path)
+
+	if err == nil {
+		return !info.IsDir()
+	}
+
+	if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	return false
 }
