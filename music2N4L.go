@@ -88,7 +88,7 @@ func ScanDirectories(fp io.Writer) {
 	// Star Trek lala land, artist  "s"
 	// Made In Japan
 
-	root_path := "/mnt/Recordings/Kōhei Tanaka, Shirō Hamaguchi"
+	root_path := "/mnt/Recordings"
 
 	ignore_prefix := "/mnt"
 
@@ -108,6 +108,10 @@ func ScanDirectories(fp io.Writer) {
 			}
 
 			if strings.Contains(path,"@Recycle") {
+				return nil
+			}
+
+			if strings.Contains(path,"MarkB") {
 				return nil
 			}
 
@@ -364,9 +368,9 @@ func AnalyzeFLAC(path string,f *os.File,m tag.Metadata,n,tot int,t Track) (strin
 	secs := track_length % time.Minute / time.Second
 
 	if secs < 10 {
-		duration = fmt.Sprintf("%d:0%d\n",mins,secs)
+		duration = fmt.Sprintf("%d:0%d",mins,secs)
 	} else {
-		duration = fmt.Sprintf("%d:%d\n",mins,secs)
+		duration = fmt.Sprintf("%d:%d",mins,secs)
 	}
 
 	// Sampling quality
