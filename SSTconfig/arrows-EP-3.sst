@@ -13,6 +13,7 @@
 
  :: music collection ::
 
+ + has file encoding      (encoding)   - is the encoding for (enc-for)
  + total number of tracks (tracks)     - is the track count for (tracks-on)
  + was released on        (released)   - was the release date for (release-of)
  + was remastered on      (remastered) - a remaster was issued for (remast-of)

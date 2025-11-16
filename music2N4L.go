@@ -22,8 +22,11 @@ import (
 	"sort"
 	"errors"
 	"path/filepath"
-        "github.com/dhowden/tag"
+//        "github.com/dhowden/tag"
+	tag "github.com/unitnotes/audiotag"
 	"github.com/go-flac/go-flac/v2"
+//	"github.com/dmulholl/mp3lib"
+	"github.com/hajimehoshi/go-mp3"
 )
 
 //******************************************************************
@@ -31,6 +34,7 @@ import (
 type Track struct {
 
 	N int
+	File string
 	Title string
 	Img string
 	Duration string
@@ -84,7 +88,7 @@ func ScanDirectories(fp io.Writer) {
 	// Star Trek lala land, artist  "s"
 	// Made In Japan
 
-	root_path := "/mnt/Recordings/"
+	root_path := "/mnt/Recordings/Kōhei Tanaka, Shirō Hamaguchi"
 
 	ignore_prefix := "/mnt"
 
@@ -180,7 +184,7 @@ func AnnotateFile(path string) (string,Track) {
 	var t Track
 	var title string = "errors"
 	var length string
-
+	
 	t.Samplings = make(map[string]int)
 	t.Composers = make(map[string]int)
 	t.Conductors = make(map[string]int)
@@ -191,26 +195,30 @@ func AnnotateFile(path string) (string,Track) {
 	t.Choir   = make(map[string]int)
 	t.Genres = make(map[string]int)
 	t.Unknowns = make(map[string]int)
-
+	
 	f, err := os.Open(path)
 	
 	if err != nil {
 		fmt.Print(err)
 	} else {
 		m, err := tag.ReadFrom(f)
-
+		
 		if err != nil {
 			fmt.Println("Unable to read",err)
 		} else {
 			n,N := m.Track()
 			t.N = n
-			title,length,t.Year,t.Title = AnalyzeFLAC(path,m,n,N,t)
+			title,length,t.Year,t.Title = AnalyzeFLAC(path,f,m,n,N,t)
+
+			if len(filepath.Ext(path)) > 1 {
+				t.File = filepath.Ext(path)[1:]
+			}
 			f.Close()
 		}
 	}
-
+	
 	t.Duration = length
-
+	
 	return title,t
 }
 
@@ -218,7 +226,7 @@ func AnnotateFile(path string) (string,Track) {
 
 func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
-	fmt.Println("Summarizing",title)
+	fmt.Printf("Summarizing %s\n",title)
 
 	fmt.Fprintln(fp,"\n",Esc(title))
 	fmt.Fprintln(fp,"    \"    (release date) ",t[0].Year)
@@ -284,6 +292,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track in) ",Esc(title))
 		fmt.Fprintln(fp,"     \"     (duration) ",t[i].Duration)
+		fmt.Fprintln(fp,"     \"     (encoding) ",t[i].File)
 		Add(fp,1,allsample,"sample rate")
 		Add(fp,1,allcomposers,"composer")
 		Add(fp,1,allconduct,"conductor")
@@ -324,7 +333,7 @@ func Add(fp io.Writer,lim int,attrib map[string]int,relation string) {
 
 // ****************************************************************
 
-func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,int,string) {
+func AnalyzeFLAC(path string,f *os.File,m tag.Metadata,n,tot int,t Track) (string,string,int,string) {
 
 	var album_title string
 	var duration string
@@ -350,7 +359,7 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// Calculate the duration
 
-	track_length,_ := GetTrackLength(path)
+	track_length,_ := GetTrackLength(path,f)
 	mins := track_length / time.Minute
 	secs := track_length % time.Minute / time.Second
 
@@ -362,7 +371,7 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 	// Sampling quality
 
-	sample,depth := GetSampleRate(path)
+	sample,depth := GetSampleRate(path,f)
 	key := fmt.Sprintf("%.1f KHz/%d bits",float64(sample)/1000.0,depth)
 	t.Samplings[key]++
 
@@ -377,44 +386,83 @@ func AnalyzeFLAC(path string,m tag.Metadata,n,tot int,t Track) (string,string,in
 
 // ****************************************************************
 
-func GetSampleRate(fileName string) (int,int) {
+func GetSampleRate(path string,f *os.File) (int,int) {
+	
+	if filepath.Ext(path) == ".flac" {
 
-	f, err := flac.ParseFile(fileName)
-	if err != nil {
-		// probably not a flac supported
-		return 0,0
-	}
-	data, err := f.GetStreamInfo()
+		f, err := flac.ParseFile(path)
 
-	if err != nil {
-		// probably not a flac supported
-		return 0,0
+		if err != nil {
+			// probably not a flac supported
+			return 0,0
+		}
+
+		data, err := f.GetStreamInfo()
+		
+		if err != nil {
+			// probably not a flac supported
+			return 0,0
+		}
+		return data.SampleRate,data.BitDepth
 	}
-	return data.SampleRate,data.BitDepth
+
+	if filepath.Ext(path) == ".mp3" {
+
+		d,err := mp3.NewDecoder(f)
+		
+		if err != nil {
+			return 0,0
+		}
+		
+		return d.SampleRate(),16
+	}
+
+	return 0,0
 }
 
 // ****************************************************************
 
-func GetTrackLength(fileName string) (time.Duration, error) {
+func GetTrackLength(path string,f *os.File) (time.Duration, error) {
+	
+	if filepath.Ext(path) == ".flac" {
+		
+		f, err := flac.ParseFile(path)
 
-	f, err := flac.ParseFile(fileName)
-	if err != nil {
-		return 0, fmt.Errorf("failed to parse FLAC file: %w", err)
+		if err != nil {
+			return 0, fmt.Errorf("failed to parse FLAC file: %w", err)
+		}
+		defer f.Close()
+		
+		streamInfo, err := f.GetStreamInfo()
+
+		if err != nil {
+			return 0, fmt.Errorf("failed to get stream info: %w", err)
+		}
+		
+		// Calculate duration in seconds
+		durationSeconds := float64(streamInfo.SampleCount) / float64(streamInfo.SampleRate)
+		
+		// Convert to time.Duration
+		duration := time.Duration(durationSeconds * float64(time.Second))
+		return duration, nil
 	}
-	defer f.Close()
+	
+	if filepath.Ext(path) == ".mp3" {
 
-	streamInfo, err := f.GetStreamInfo()
-	if err != nil {
-		return 0, fmt.Errorf("failed to get stream info: %w", err)
+		d,err := mp3.NewDecoder(f)
+
+		if err != nil {
+			return 0, nil
+		}
+
+		const sampleSize = 4                  // From documentation.
+		samples := d.Length() / sampleSize    // Number of samples.
+		durationSeconds := float64(samples) / float64(d.SampleRate())
+		duration := time.Duration(durationSeconds * float64(time.Second))
+		return duration, nil
 	}
-
-	// Calculate duration in seconds
-	durationSeconds := float64(streamInfo.SampleCount) / float64(streamInfo.SampleRate)
-
-	// Convert to time.Duration
-	duration := time.Duration(durationSeconds * float64(time.Second))
-
-	return duration, nil
+	
+	return 0, nil
 }
 
 // ****************************************************************
