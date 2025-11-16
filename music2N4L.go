@@ -69,6 +69,9 @@ func main() {
 
 	fp, err := os.Create(name)
 
+	// Unicode BOM UTF-8
+	fmt.Fprintf(fp,"\xef\xbb\xbf")
+
 	if err != nil {
 		fmt.Println("Error creating file:", err)
 		return
@@ -102,18 +105,7 @@ func ScanDirectories(fp io.Writer) {
 			return nil // Return the error to stop further traversal in this branch
 		}
 		
-		if d.IsDir() {
-			if strings.Contains(path,"/.") {
-				return nil
-			}
-
-			if strings.Contains(path,"@Recycle") {
-				return nil
-			}
-
-			if strings.Contains(path,"MarkB") {
-				return nil
-			}
+		if d.IsDir() && !Excluded(d.Name()) {
 
 			CURRENT_IMAGE = ""
 			CURRENT_ALBUM = ""
@@ -688,5 +680,26 @@ func FileExists(path string) bool {
 	if errors.Is(err, os.ErrNotExist) {
 		return false
 	}
+	return false
+}
+
+func Excluded(s string) bool {
+
+	if strings.Contains(s,"/.") {
+		return true
+	}
+	
+	if strings.Contains(s,"@Recycle") {
+		return true
+	}
+
+	if strings.Contains(s,"@Recently") {
+		return true
+	}
+	
+	if strings.Contains(s,"MarkB") {
+		return true
+	}
+	
 	return false
 }
