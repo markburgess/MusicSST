@@ -268,6 +268,16 @@ func AnnotateFile(path string) (string,Track) {
 		}
 	}
 
+	for key := range t.Unknowns {
+		if title == key {
+			title += " [Eponymous Album]"
+		}
+	}
+
+	if title == fmt.Sprintf("%s",t.Year) {
+		title += " [Eponymous Album]"
+	}
+
 	return title,t
 }
 
