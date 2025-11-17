@@ -21,11 +21,10 @@ import (
 	"strings"
 	"sort"
 	"errors"
+	"flag"
 	"path/filepath"
-//        "github.com/dhowden/tag"
 	tag "github.com/unitnotes/audiotag"
 	"github.com/go-flac/go-flac/v2"
-//	"github.com/dmulholl/mp3lib"
 	"github.com/hajimehoshi/go-mp3"
 )
 
@@ -55,19 +54,56 @@ var CURRENT_ALBUM string
 var CURRENT_IMAGE string
 var COLLECTION = make(map[string][]Track)
 var IGNORE = []string{"Orchestra","Engineer","Producer","Conductor","Composer","Studio"}
+var VERBOSE bool
 
-//******************************************************************
+// *********************************************************************
+// Main
+// *********************************************************************
 
 func main() {
 
-	name := "output.n4l"
+	rootpath,outputfile := Init()
+	Start(rootpath,outputfile)
+}
 
-	if FileExists(name) {
-		fmt.Println("File exists - careful!\n")
+//**************************************************************
+
+func Init() (string,string) {
+
+	flag.Usage = Usage
+
+	verbose := flag.Bool("v", false,"verbose")
+	resource := flag.String("resources", "/mnt", "Root directory for serving /Resource/ files")
+	output := flag.String("output", "output.n4l", "Output filename")
+
+	flag.Parse()
+
+	if *verbose {
+		VERBOSE = true
+	}
+
+	return *resource,*output
+}
+
+//**************************************************************
+
+func Usage() {
+	
+	fmt.Printf("usage: http_server [-resources string]\n")
+	flag.PrintDefaults()
+	os.Exit(1)
+}
+
+//******************************************************************
+
+func Start(rootpath,output string) {
+
+	if FileExists(output) {
+		fmt.Printf("File \"%s\" exists - careful!\n",output)
 		return
 	}
 
-	fp, err := os.Create(name)
+	fp, err := os.Create(output)
 
 	// Unicode BOM UTF-8
 	fmt.Fprintf(fp,"\xef\xbb\xbf")
@@ -79,25 +115,22 @@ func main() {
 
 	defer fp.Close()
 
-	ScanDirectories(fp)
+	ScanDirectories(fp,rootpath)
 
 }
 
 //******************************************************************
 
-func ScanDirectories(fp io.Writer) {
+func ScanDirectories(fp io.Writer,rootpath string) {
 
 	// Check Brahms, Andris // Yoyo ma.. Jurowski
 	// Star Trek lala land, artist  "s"
 	// Made In Japan
 
-	root_path := "/mnt/Recordings"
-
-	ignore_prefix := "/mnt"
-
+	ignore_prefix := rootpath
 	off := len(ignore_prefix)
 	
-	err := filepath.WalkDir(root_path, func(path string, d fs.DirEntry, err error) error {
+	err := filepath.WalkDir(rootpath, func(path string, d fs.DirEntry, err error) error {
 
 		if err != nil {
 			// Handle errors that occur during directory traversal
@@ -153,6 +186,8 @@ func ScanDirectories(fp io.Writer) {
 		log.Fatalf("Error walking directory: %v", err)
 	}
 
+	fmt.Fprintln(fp,"\n-Music Collection\n ")
+
 	for all := range COLLECTION {
 
 		fmt.Fprintln(fp,"\n  ###################################\n ")
@@ -200,7 +235,7 @@ func AnnotateFile(path string) (string,Track) {
 		m, err := tag.ReadFrom(f)
 		
 		if err != nil {
-			fmt.Println("Unable to read",err)
+			fmt.Println("Unable to read",err,"file type",filepath.Ext(path))
 		} else {
 			n,N := m.Track()
 			t.N = n
@@ -214,7 +249,25 @@ func AnnotateFile(path string) (string,Track) {
 	}
 	
 	t.Duration = length
+
+	for key := range t.Composers {
+		if title == key {
+			title += " [Eponymous Album]"
+		}
+	}
+
+	for key := range t.Performers {
+		if title == key {
+			title += " [Eponymous Album]"
+		}
+	}
 	
+	for key := range t.Conductors {
+		if title == key {
+			title += " [Eponymous Album]"
+		}
+	}
+
 	return title,t
 }
 
@@ -225,7 +278,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	fmt.Printf("Summarizing %s\n",title)
 
 	fmt.Fprintln(fp,"\n",Esc(title))
-	fmt.Fprintln(fp,"    \"    (release date) ",t[0].Year)
+	fmt.Fprintln(fp,"    \"    (released) ",t[0].Year)
 
 	var allcomposers = make(map[string]int)
 	var allsample = make(map[string]int)
@@ -259,7 +312,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	}
 
 	if image != "" {
-		fmt.Fprintf(fp,"    \"    (img) \"%s\"\n",image)
+		fmt.Fprintf(fp,"    \"    (img) \"/Resources/%s\"\n",image)
 	}
 
 	Add(fp,0,allsample,"sample rate")
@@ -271,7 +324,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	Add(fp,0,alleng,"engineer")
 	Add(fp,0,allprod,"producer")
 	Add(fp,0,allgenre,"genre")
-	Add(fp,0,allknow,"undecipherable role")
+	Add(fp,0,allknow,"indecipherable role")
 
 	// ******
 
@@ -298,7 +351,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		Add(fp,1,alleng,"engineer")
 		Add(fp,1,allprod,"producer")
 		Add(fp,1,allgenre,"genre")
-		Add(fp,1,allknow,"undecipherable role")
+		Add(fp,1,allknow,"indecipherable role")
 	}
 
 	fmt.Fprintln(fp,"\n  -:: _sequence_ ::\n")
@@ -347,7 +400,9 @@ func AnalyzeFLAC(path string,f *os.File,m tag.Metadata,n,tot int,t Track) (strin
 	album := m.Album()
 	album_title = strings.TrimSpace(album)	
 
-	t.Genres[genre]++
+	if len(genre) > 0 {
+		t.Genres[genre]++
+	}
 
 	// Make sure we encapsulate tracks with number, since tracks may collide with album
 

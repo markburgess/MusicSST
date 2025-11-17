@@ -28,15 +28,19 @@
  + published the release (published) - was published by (publisher)
 
  + performance by ensemble type  (ensemble)     - has performed (e-perforamce)
- + has track length/playing time (length)       - is the track length/playing time of (length-of)
+ + has track length/playing time (duration)     - is the track length/playing time of (length-of)
  + has lyrics                    (lyrics)       - are the lyrics for (lyrics-for)
  + has instrumental description  (instrumental) - describes an instrumental (descr-instr)
 
  + has mood roughly...      (mood)     - is the mood describing (mood-of)
  + has hi-fi quality/rating (hif)      - hifi quality/rating for
+ + has sampling rate        (sample rate) - is the sampling rate for (samp-for)
 
  + was produced by (producer)      - produced the recording (produced)
+ + was engineered by (engineer)     - was the engineer for (engineer-for)
  + was composed by (composer)      - composed the work (composed)
  + was conducted by (conductor)    - conducted the performance (conducted)
- + was performed by (performed by) - performed (performed)
+ + was performed by (performer) - performed (performed)
+ + features orchestra (orchestra) - orchestra features in (orch-for)
 
+ + indecipherable role (???)  - undecipherable role (xxx)

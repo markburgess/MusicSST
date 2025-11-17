@@ -9,7 +9,6 @@
 
   % (ref)                    # refers to, a generic way of linking components
   = (involves)
- ** (is a special case of)
 
  # Longer matches should come first to ensure we don't pick up the substring instead
 
