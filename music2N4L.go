@@ -1,4 +1,5 @@
 
+
 // go mod init github.com/markburgess/MusicSST
 // go mod tidy
 // sudo mount -t nfs 192.168.0.250:/Recordings /mnt/Recordings
@@ -103,10 +104,16 @@ func Start(rootpath,output string) {
 		return
 	}
 
+	ScanDirectories(rootpath)
+
 	fp, err := os.Create(output)
 
 	// Unicode BOM UTF-8
-	fmt.Fprintf(fp,"\xef\xbb\xbf")
+
+	const BOM_UTF8 = "\xef\xbb\xbf"
+
+	fmt.Fprintf(fp,BOM_UTF8)
+	fmt.Fprintf(fp,"# Output of music2N4L")
 
 	if err != nil {
 		fmt.Println("Error creating file:", err)
@@ -115,13 +122,19 @@ func Start(rootpath,output string) {
 
 	defer fp.Close()
 
-	ScanDirectories(fp,rootpath)
+	fmt.Fprintln(fp,"\n-Music Collection\n ")
+
+	for all := range COLLECTION {
+
+		fmt.Fprintln(fp,"\n  ###################################\n ")
+		SummarizeAlbum(fp,COLLECTION[all],all)
+	}
 
 }
 
 //******************************************************************
 
-func ScanDirectories(fp io.Writer,rootpath string) {
+func ScanDirectories(rootpath string) {
 
 	// Check Brahms, Andris // Yoyo ma.. Jurowski
 	// Star Trek lala land, artist  "s"
@@ -184,14 +197,6 @@ func ScanDirectories(fp io.Writer,rootpath string) {
 
 	if err != nil {
 		log.Fatalf("Error walking directory: %v", err)
-	}
-
-	fmt.Fprintln(fp,"\n-Music Collection\n ")
-
-	for all := range COLLECTION {
-
-		fmt.Fprintln(fp,"\n  ###################################\n ")
-		SummarizeAlbum(fp,COLLECTION[all],all)
 	}
 }
 
@@ -274,7 +279,10 @@ func AnnotateFile(path string) (string,Track) {
 		}
 	}
 
-	if title == fmt.Sprintf("%s",t.Year) {
+	yearstr := fmt.Sprintf("%d",t.Year)
+
+	if title == yearstr {
+
 		title += " [Eponymous Album]"
 	}
 
@@ -385,7 +393,7 @@ func Add(fp io.Writer,lim int,attrib map[string]int,relation string) {
 	if len(attrib) > lim {
 
 		for p := range attrib {
-			fmt.Fprintf(fp,"    \"    (%s) '%s'\n",relation,p)
+			fmt.Fprintf(fp,"    \"    (%s) '%s'\n",relation,Esc(p))
 		}
 	}
 }
