@@ -34,11 +34,11 @@ import (
 type Track struct {
 
 	N int
-	File string
 	Title string
 	Img string
 	Duration string
 	Year int
+	Encodings map[string]int
 	Samplings map[string]int
 	Composers map[string]int
 	Conductors map[string]int
@@ -222,6 +222,7 @@ func AnnotateFile(path string) (string,Track) {
 	var length string
 	
 	t.Samplings = make(map[string]int)
+	t.Encodings = make(map[string]int)
 	t.Composers = make(map[string]int)
 	t.Conductors = make(map[string]int)
 	t.Performers = make(map[string]int)
@@ -247,7 +248,8 @@ func AnnotateFile(path string) (string,Track) {
 			title,length,t.Year,t.Title = AnalyzeFLAC(path,f,m,n,N,t)
 
 			if len(filepath.Ext(path)) > 1 {
-				t.File = filepath.Ext(path)[1:]
+				filetype := filepath.Ext(path)[1:]
+				t.Encodings[filetype]++
 			}
 			f.Close()
 		}
@@ -295,9 +297,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 	fmt.Printf("Summarizing %s\n",title)
 
-	fmt.Fprintln(fp,"\n",Esc(title))
-	fmt.Fprintln(fp,"    \"    (released) ",t[0].Year)
-
+	var allencodings = make(map[string]int)
 	var allcomposers = make(map[string]int)
 	var allsample = make(map[string]int)
 	var allconduct = make(map[string]int)
@@ -317,6 +317,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 			continue
 		}
 
+		MergeMaps(allencodings,t[i].Encodings)
 		MergeMaps(allcomposers,t[i].Composers)
 		MergeMaps(allsample,t[i].Samplings)
 		MergeMaps(allconduct,t[i].Conductors)
@@ -328,6 +329,11 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		MergeMaps(allgenre,t[i].Genres)
 		MergeMaps(allknow,t[i].Unknowns)
 	}
+
+	AddContext(fp,allencodings)
+
+	fmt.Fprintln(fp,"\n",Esc(title))
+	fmt.Fprintln(fp,"    \"    (released) ",t[0].Year)
 
 	if image != "" {
 		fmt.Fprintf(fp,"    \"    (img) \"/Resources/%s\"\n",image)
@@ -359,7 +365,10 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track in) ",Esc(title))
 		fmt.Fprintln(fp,"     \"     (duration) ",t[i].Duration)
-		fmt.Fprintln(fp,"     \"     (encoding) ",t[i].File)
+		
+		// ** DON'T DO THIS! Gigantic hub **
+		// fmt.Fprintln(fp,"     \"     (encoding) ",t[i].File)
+
 		Add(fp,1,allsample,"sample rate")
 		Add(fp,1,allcomposers,"composer")
 		Add(fp,1,allconduct,"conductor")
@@ -384,6 +393,25 @@ func Esc(s string) string {
 	s = strings.ReplaceAll(s,"(","[")
 	s = strings.ReplaceAll(s,")","]")
 	return s
+}
+
+// ****************************************************************
+
+func AddContext(fp io.Writer,attrib map[string]int) {
+
+	if len(attrib) == 0 {
+		return
+	}
+
+	s := ""
+
+	for p := range attrib {
+		s += p + ","
+	}
+
+	s = strings.Trim(s,",")
+
+	fmt.Fprintf(fp,"\n :: " + s + " ::\n\n")
 }
 
 // ****************************************************************
