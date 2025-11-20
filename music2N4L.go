@@ -23,6 +23,7 @@ import (
 	"sort"
 	"errors"
 	"flag"
+	"net/url"
 	"path/filepath"
 	tag "github.com/unitnotes/audiotag"
 	"github.com/go-flac/go-flac/v2"
@@ -336,7 +337,8 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	fmt.Fprintln(fp,"    \"    (released) ",t[0].Year)
 
 	if image != "" {
-		fmt.Fprintf(fp,"    \"    (img) \"/Resources/%s\"\n",image)
+		url := url.PathEscape("/Resources/"+image)
+		fmt.Fprintf(fp,"    \"    (img) \"%s\"\n",url)
 	}
 
 	Add(fp,0,allsample,"sample rate")
