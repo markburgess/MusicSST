@@ -4,6 +4,8 @@
 // go mod tidy
 // sudo mount -t nfs 192.168.0.250:/Recordings /mnt/Recordings
 
+// go run music2N4L.go -resources /mnt/Recordings
+
 //******************************************************************
 //
 // Demo of node by node addition, assuming that the arrows are predefined
@@ -23,7 +25,7 @@ import (
 	"sort"
 	"errors"
 	"flag"
-	"net/url"
+//	"net/url"
 	"path/filepath"
 	tag "github.com/unitnotes/audiotag"
 	"github.com/go-flac/go-flac/v2"
@@ -337,7 +339,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 	fmt.Fprintln(fp,"    \"    (released) ",t[0].Year)
 
 	if image != "" {
-		url := url.PathEscape("/Resources/"+image)
+		url := PathEscape("/Resources"+image)
 		fmt.Fprintf(fp,"    \"    (img) \"%s\"\n",url)
 	}
 
@@ -371,16 +373,17 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		// ** DON'T DO THIS! Gigantic hub **
 		// fmt.Fprintln(fp,"     \"     (encoding) ",t[i].File)
 
-		Add(fp,1,allsample,"sample rate")
-		Add(fp,1,allcomposers,"composer")
-		Add(fp,1,allconduct,"conductor")
-		Add(fp,1,allorch,"orchestra")
-		Add(fp,1,allchoir,"choir")
-		Add(fp,1,allperf,"performer")
-		Add(fp,1,alleng,"engineer")
-		Add(fp,1,allprod,"producer")
-		Add(fp,1,allgenre,"genre")
-		Add(fp,1,allknow,"indecipherable role")
+		Add(fp,1,t[i].Samplings,"sample rate")
+		Add(fp,1,t[i].Composers,"composer")
+		Add(fp,1,t[i].Conductors,"conductor")
+		Add(fp,1,t[i].Orchestra,"orchestra")
+		Add(fp,1,t[i].Choir,"choir")
+		Add(fp,1,t[i].Performers,"performer")
+		Add(fp,1,t[i].Engineer,"engineer")
+		Add(fp,1,t[i].Producer,"producer")
+		Add(fp,1,t[i].Genres,"genre")
+		Add(fp,1,t[i].Unknowns,"indecipherable role")
+		
 	}
 
 	fmt.Fprintln(fp,"\n  -:: _sequence_ ::\n")
@@ -785,6 +788,16 @@ func FileExists(path string) bool {
 	}
 	return false
 }
+
+// ****************************************************************
+
+func PathEscape(path string) string {
+
+	return strings.ReplaceAll(path," ","%20")
+}
+
+// ****************************************************************
+
 
 func Excluded(s string) bool {
 
