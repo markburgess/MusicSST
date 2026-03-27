@@ -345,7 +345,7 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 
 	Add(fp,0,allsample,"sample rate")
 	Add(fp,0,allcomposers,"composer")
-	Add(fp,0,allconduct,"conductor")
+	Add(fp,0,allconduct,"mconductor")
 	Add(fp,0,allorch,"orchestra")
 	Add(fp,0,allchoir,"choir")
 	Add(fp,0,allperf,"performer")
@@ -368,14 +368,14 @@ func SummarizeAlbum(fp io.Writer,t []Track,title string) {
 		}
 
 		fmt.Fprintln(fp,"\n",Esc(t[i].Title)," (track in) ",Esc(title))
-		fmt.Fprintln(fp,"     \"     (duration) ",t[i].Duration)
+		fmt.Fprintln(fp,"     \"     (playtime) ",t[i].Duration)
 		
 		// ** DON'T DO THIS! Gigantic hub **
 		// fmt.Fprintln(fp,"     \"     (encoding) ",t[i].File)
 
 		Add(fp,1,t[i].Samplings,"sample rate")
 		Add(fp,1,t[i].Composers,"composer")
-		Add(fp,1,t[i].Conductors,"conductor")
+		Add(fp,1,t[i].Conductors,"mconductor")
 		Add(fp,1,t[i].Orchestra,"orchestra")
 		Add(fp,1,t[i].Choir,"choir")
 		Add(fp,1,t[i].Performers,"performer")
