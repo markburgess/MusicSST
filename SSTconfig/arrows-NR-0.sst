@@ -2,15 +2,17 @@
 
 - similarity # nearness, proximity
 
- :: mistakes, warnings ::
+ :: mistakes, warnings, meanings ::
  
  looks like                      (ll)
  sounds like        	         (sl)
- don't confuse with              (confuse)
+ don't confuse with              (!confuse)
  alternate spelling              (sp)
- not the same as                 (is-not)
+ not the same as                 (!same)
  compare to                      (compare)
  stands for                      (sfor)
+ antonym                         (!syn)
+ synonym                         (syn)
 
  is sometimes mistaken for       (mistaken)
 
@@ -44,6 +46,8 @@
  similar to         	         (sim)
  associated with         	 (ass)  # (loose coupling)
  see also                        (see)
+ see similar example             (similar)
+ contrast this with              (contrast)
  also called                     (alias)
  near to              	         (nr)
 
@@ -53,7 +57,6 @@
  same as                         (=)
  is approximately equivalent to  (simeq)
  
- is not the same as 	         (!eq)
  is nothing like                 (different!)
 
  runs alongside                  (runs-with)
@@ -69,6 +72,7 @@
  has met                         (met)
  dated/was in relationshi with   (dated)
 
+ is connected to                 (connected)
  connects to                     (connects)
  is adjacent with                (adj)
 
